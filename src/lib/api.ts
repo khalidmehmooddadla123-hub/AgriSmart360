@@ -14,7 +14,7 @@ export async function fetchWeather(city: string) {
       rainProbability: 20,
       description: 'Partly Cloudy',
       icon: '02d',
-      sprayRecommendation: city,
+      sprayRecommendation: 'موسم سپرے کے لیے مناسب ہے',
     };
   }
   try {
