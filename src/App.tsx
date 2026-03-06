@@ -19,6 +19,7 @@ import Notifications from './pages/Notifications';
 import Advisory from './pages/Advisory';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import LandingPage from './pages/LandingPage';
 import './lib/i18n';
 
 const queryClient = new QueryClient({
@@ -30,10 +31,10 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-agri-bg dark:bg-agri-dark">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto mb-4" />
-          <p className="font-urdu text-gray-600">لوڈ ہو رہا ہے...</p>
+          <p className="font-urdu text-gray-600 dark:text-gray-300">لوڈ ہو رہا ہے...</p>
         </div>
       </div>
     );
@@ -64,10 +65,14 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 function AppRoutes() {
   return (
     <Routes>
+      {/* Public routes */}
+      <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+
+      {/* Protected app routes under /app */}
       <Route
-        path="/"
+        path="/app"
         element={
           <ProtectedRoute>
             <Layout />
@@ -89,6 +94,9 @@ function AppRoutes() {
         <Route path="notifications" element={<Notifications />} />
         <Route path="advisory" element={<Advisory />} />
       </Route>
+
+      {/* Catch-all redirect */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
