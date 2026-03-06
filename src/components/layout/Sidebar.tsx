@@ -12,24 +12,25 @@ interface SidebarProps {
 }
 
 const navItems = [
-  { key: 'dashboard', path: '/', icon: LayoutDashboard },
-  { key: 'prices', path: '/prices', icon: TrendingUp },
-  { key: 'weather', path: '/weather', icon: CloudSun },
-  { key: 'marketplace', path: '/marketplace', icon: ShoppingBag },
-  { key: 'disease', path: '/disease', icon: Leaf },
-  { key: 'news', path: '/news', icon: Newspaper },
-  { key: 'land', path: '/land', icon: MapPin },
-  { key: 'advisory', path: '/advisory', icon: BrainCircuit },
-  { key: 'eco', path: '/eco', icon: HeartHandshake },
-  { key: 'chat', path: '/chat', icon: MessageCircle },
-  { key: 'notifications', path: '/notifications', icon: Bell },
-  { key: 'history', path: '/history', icon: History },
-  { key: 'complaint', path: '/complaint', icon: MessageCircle },
-  { key: 'profile', path: '/profile', icon: User },
+  { key: 'dashboard', path: '/app', icon: LayoutDashboard },
+  { key: 'prices', path: '/app/prices', icon: TrendingUp },
+  { key: 'weather', path: '/app/weather', icon: CloudSun },
+  { key: 'marketplace', path: '/app/marketplace', icon: ShoppingBag },
+  { key: 'disease', path: '/app/disease', icon: Leaf },
+  { key: 'news', path: '/app/news', icon: Newspaper },
+  { key: 'land', path: '/app/land', icon: MapPin },
+  { key: 'advisory', path: '/app/advisory', icon: BrainCircuit },
+  { key: 'eco', path: '/app/eco', icon: HeartHandshake },
+  { key: 'chat', path: '/app/chat', icon: MessageCircle },
+  { key: 'notifications', path: '/app/notifications', icon: Bell },
+  { key: 'history', path: '/app/history', icon: History },
+  { key: 'complaint', path: '/app/complaint', icon: MessageCircle },
+  { key: 'profile', path: '/app/profile', icon: User },
 ];
 
 export default function Sidebar({ open, onClose }: SidebarProps) {
   const { t } = useTranslation();
+  const isRTL = document.documentElement.dir === 'rtl';
 
   return (
     <>
@@ -41,10 +42,14 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar – positioned on start edge (right in RTL, left in LTR) */}
       <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-900 shadow-xl z-30 transform transition-transform duration-300
-          ${open ? 'translate-x-0' : '-translate-x-full'}
+        className={`fixed top-0 h-full w-64 bg-white dark:bg-gray-900 shadow-xl z-30 transform transition-transform duration-300
+          ${isRTL ? 'right-0' : 'left-0'}
+          ${open
+            ? 'translate-x-0'
+            : isRTL ? 'translate-x-full' : '-translate-x-full'
+          }
           lg:translate-x-0 lg:static lg:shadow-none lg:z-auto`}
       >
         {/* Logo */}
@@ -69,7 +74,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
             <NavLink
               key={key}
               to={path}
-              end={path === '/'}
+              end={path === '/app'}
               onClick={() => onClose()}
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? 'active' : ''}`

@@ -6,7 +6,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useNotifications } from '../../hooks/useNotifications';
 import { LANGUAGES } from '../../lib/i18n';
 import i18n from '../../lib/i18n';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -17,6 +17,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
   const { user, signOut } = useAuth();
   const { isDark, toggleTheme } = useTheme();
   const { unreadCount } = useNotifications();
+  const navigate = useNavigate();
   const [langOpen, setLangOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
 
@@ -30,10 +31,18 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
     setLangOpen(false);
   };
 
+  const handleLogout = async () => {
+    setUserOpen(false);
+    // Clear demo user if present
+    localStorage.removeItem('demo_user');
+    await signOut();
+    navigate('/');
+  };
+
   return (
     <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
       <div className="flex items-center justify-between px-4 py-3">
-        {/* Left: Hamburger + Title */}
+        {/* Start: Hamburger + Title */}
         <div className="flex items-center gap-3">
           <button
             onClick={onMenuClick}
@@ -46,9 +55,9 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
           </div>
         </div>
 
-        {/* Right: Controls */}
+        {/* End: Controls */}
         <div className="flex items-center gap-2">
-          {/* Language Selector */}
+          {/* Language Selector – only Urdu & English */}
           <div className="relative">
             <button
               onClick={() => setLangOpen(!langOpen)}
@@ -59,12 +68,12 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
               <ChevronDown size={14} />
             </button>
             {langOpen && (
-              <div className="absolute right-0 mt-1 w-44 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 z-50 max-h-72 overflow-y-auto">
+              <div className="absolute end-0 mt-1 w-36 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 z-50 overflow-hidden">
                 {LANGUAGES.map(lang => (
                   <button
                     key={lang.code}
                     onClick={() => handleLangChange(lang.code, lang.dir)}
-                    className={`w-full text-left px-4 py-2 text-sm hover:bg-primary-50 dark:hover:bg-primary-900 hover:text-primary transition-colors
+                    className={`w-full text-start px-4 py-2.5 text-sm hover:bg-primary-50 dark:hover:bg-primary-900 hover:text-primary transition-colors
                       ${lang.code === i18n.language ? 'text-primary font-semibold bg-primary-50 dark:bg-primary-900' : 'text-gray-700 dark:text-gray-200'}`}
                     dir={lang.dir}
                   >
@@ -85,7 +94,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
 
           {/* Notifications */}
           <Link
-            to="/notifications"
+            to="/app/notifications"
             className="relative p-1.5 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
           >
             <Bell size={18} />
@@ -112,20 +121,20 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
                 <ChevronDown size={14} className="text-gray-500" />
               </button>
               {userOpen && (
-                <div className="absolute right-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+                <div className="absolute end-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 z-50">
                   <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                     <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">{user.name}</p>
                     <p className="text-xs text-gray-500">{t(user.role)}</p>
                   </div>
                   <Link
-                    to="/profile"
+                    to="/app/profile"
                     onClick={() => setUserOpen(false)}
                     className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
                     {t('profile')}
                   </Link>
                   <button
-                    onClick={() => { signOut(); setUserOpen(false); }}
+                    onClick={handleLogout}
                     className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 w-full"
                   >
                     <LogOut size={15} />
@@ -134,6 +143,17 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
                 </div>
               )}
             </div>
+          )}
+
+          {/* Logout button for demo users (no profile) */}
+          {!user && (
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+            >
+              <LogOut size={15} />
+              <span className="hidden sm:inline">{t('logout')}</span>
+            </button>
           )}
         </div>
       </div>

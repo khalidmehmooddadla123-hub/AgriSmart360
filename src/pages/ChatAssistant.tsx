@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Send, Mic, MicOff, Volume2, VolumeX, Bot, User } from 'lucide-react';
-import i18n from '../lib/i18n';
 
 interface Message {
   id: string;
@@ -123,30 +122,21 @@ export default function ChatAssistant() {
     setMessages(prev => [...prev, assistantMsg]);
     setIsTyping(false);
 
-    // Voice output
+    // Voice output – always in Urdu
     if (voiceEnabled && 'speechSynthesis' in window) {
       speakText(response);
     }
-  };
-
-  const getSpeechLang = () => {
-    const langMap: Record<string, string> = {
-      ur: 'ur-PK', en: 'en-US', ar: 'ar-SA', hi: 'hi-IN',
-      pa: 'pa-IN', sd: 'sd-PK', ps: 'ps-AF', tr: 'tr-TR', zh: 'zh-CN',
-    };
-    return langMap[i18n.language] || 'ur-PK';
   };
 
   const speakText = (text: string) => {
     if (!('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    const lang = getSpeechLang();
-    // Try to find a matching voice
+    // Voice output is always in Urdu regardless of UI language
+    utterance.lang = 'ur-PK';
     const voices = window.speechSynthesis.getVoices();
-    const matchingVoice = voices.find(v => v.lang.startsWith(lang.split('-')[0]));
-    if (matchingVoice) utterance.voice = matchingVoice;
-    utterance.lang = lang;
+    const urduVoice = voices.find(v => v.lang === 'ur-PK' || v.lang.startsWith('ur'));
+    if (urduVoice) utterance.voice = urduVoice;
     utterance.rate = 0.85;
     utterance.pitch = 1;
     utterance.onstart = () => setIsSpeaking(true);
@@ -166,7 +156,7 @@ export default function ChatAssistant() {
       return;
     }
     const recognition = new SpeechRecognition();
-    recognition.lang = getSpeechLang();
+    recognition.lang = 'ur-PK'; // Always Urdu for voice input
     recognition.continuous = false;
     recognition.interimResults = false;
     recognition.onresult = (event) => {
