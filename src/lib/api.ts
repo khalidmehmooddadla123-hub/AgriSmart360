@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+// NOTE: VITE_OPENWEATHER_API_KEY is exposed client-side (prefixed with VITE_).
+// OpenWeather free tier allows CORS requests from browsers.
+// For production with paid plans, proxy via a backend/edge function to protect the key.
 const OPENWEATHER_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || '';
 
 export async function fetchWeather(city: string) {

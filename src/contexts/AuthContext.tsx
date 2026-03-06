@@ -66,8 +66,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           });
         }
       }
-    } catch {
-      // ignore
+    } catch (err) {
+      console.error('Error fetching user profile:', err);
     } finally {
       setLoading(false);
     }
