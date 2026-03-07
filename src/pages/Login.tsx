@@ -263,13 +263,16 @@ export default function Login() {
                       </div>
                       <input
                         type="tel"
-                        value={phone.replace(/^\+92/, '').replace(/^\+/, '')}
-                        onChange={e => setPhone('+92' + e.target.value.replace(/\D/g, ''))}
+                        value={phone.replace(/^\+92/, '')}
+                        onChange={e => {
+                          const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+                          setPhone(digits ? `+92${digits}` : '');
+                        }}
                         required
                         className="input-field flex-1"
                         placeholder="3001234567"
                         dir="ltr"
-                        maxLength={12}
+                        maxLength={10}
                       />
                     </div>
                     <p className="text-xs text-gray-400 mt-1">

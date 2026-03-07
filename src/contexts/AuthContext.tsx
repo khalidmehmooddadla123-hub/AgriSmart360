@@ -111,7 +111,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         // Clean up existing recaptcha
         if (recaptchaRef.current) {
-          recaptchaRef.current.clear();
+          try {
+            recaptchaRef.current.clear();
+          } catch {
+            // Ignore cleanup errors
+          }
           recaptchaRef.current = null;
         }
         const container = document.getElementById('recaptcha-container');

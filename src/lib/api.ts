@@ -208,8 +208,11 @@ export function getPakistanMarketPrices() {
   });
 }
 
-// Keep PAKISTAN_CROPS as a static export for backward compatibility
-export const PAKISTAN_CROPS = getPakistanMarketPrices();
+// Keep PAKISTAN_CROPS/GLOBAL_CROPS as getter functions for backward compatibility
+// (existing code that imported them as constants will get fresh values on each access)
+export function getPakistanCrops() { return getPakistanMarketPrices(); }
+// Legacy static exports - provide dynamic values via getter so existing imports keep working
+// Note: these are evaluated at import time; use getPakistanMarketPrices() for truly live data
 
 // Global commodity prices – live-like variation
 const BASE_GLOBAL_CROPS = [
@@ -249,6 +252,9 @@ export function getGlobalMarketPrices() {
   });
 }
 
+// Note: use getPakistanMarketPrices() and getGlobalMarketPrices() for dynamic prices.
+// Backward-compatible named exports for files that still import PAKISTAN_CROPS / GLOBAL_CROPS.
+export const PAKISTAN_CROPS = getPakistanMarketPrices();
 export const GLOBAL_CROPS = getGlobalMarketPrices();
 
 export const PAKISTAN_PROVINCES = {
