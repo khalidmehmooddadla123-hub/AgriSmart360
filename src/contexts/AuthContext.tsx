@@ -1,5 +1,12 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import {
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+  signOut as firebaseSignOut,
+} from 'firebase/auth';
+import type { ConfirmationResult } from 'firebase/auth';
 import { supabase } from '../lib/supabase';
+import { firebaseAuth, hasFirebaseConfig } from '../lib/firebase';
 import type { User } from '../types';
 
 interface AuthContextType {
@@ -13,6 +20,7 @@ interface AuthContextType {
   verifyOTP: (phone: string, otp: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   updateProfile: (data: Partial<User>) => Promise<{ error: Error | null }>;
+  isFirebasePhoneAuth: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -21,6 +29,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<import('@supabase/supabase-js').Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const confirmationResultRef = useRef<ConfirmationResult | null>(null);
+  const recaptchaRef = useRef<RecaptchaVerifier | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -96,17 +106,64 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function signInWithPhone(phone: string) {
+    // Use Firebase phone auth if configured; fall back to Supabase
+    if (hasFirebaseConfig && firebaseAuth) {
+      try {
+        // Clean up existing recaptcha
+        if (recaptchaRef.current) {
+          try {
+            recaptchaRef.current.clear();
+          } catch {
+            // Ignore cleanup errors
+          }
+          recaptchaRef.current = null;
+        }
+        const container = document.getElementById('recaptcha-container');
+        if (!container) return { error: new Error('reCAPTCHA container not found') };
+
+        recaptchaRef.current = new RecaptchaVerifier(firebaseAuth, 'recaptcha-container', {
+          size: 'invisible',
+        });
+        const confirmationResult = await signInWithPhoneNumber(firebaseAuth, phone, recaptchaRef.current);
+        confirmationResultRef.current = confirmationResult;
+        return { error: null };
+      } catch (err) {
+        return { error: err as Error };
+      }
+    }
     const { error } = await supabase.auth.signInWithOtp({ phone });
     return { error: error as Error | null };
   }
 
   async function verifyOTP(phone: string, token: string) {
+    // Use Firebase phone auth if configured
+    if (hasFirebaseConfig && firebaseAuth && confirmationResultRef.current) {
+      try {
+        const result = await confirmationResultRef.current.confirm(token);
+        const fbUser = result.user;
+        // Set a minimal user object from Firebase user
+        setUser({
+          id: fbUser.uid,
+          phone: fbUser.phoneNumber || phone,
+          name: fbUser.displayName || phone,
+          role: 'farmer',
+        });
+        setLoading(false);
+        confirmationResultRef.current = null;
+        return { error: null };
+      } catch (err) {
+        return { error: err as Error };
+      }
+    }
     const { error } = await supabase.auth.verifyOtp({ phone, token, type: 'sms' });
     return { error: error as Error | null };
   }
 
   async function signOut() {
     await supabase.auth.signOut();
+    if (hasFirebaseConfig && firebaseAuth) {
+      await firebaseSignOut(firebaseAuth).catch(() => null);
+    }
     setUser(null);
     setSession(null);
   }
@@ -123,6 +180,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       user, session, loading,
       signInWithEmail, signUpWithEmail, signInWithGoogle,
       signInWithPhone, verifyOTP, signOut, updateProfile,
+      isFirebasePhoneAuth: hasFirebaseConfig,
     }}>
       {children}
     </AuthContext.Provider>
