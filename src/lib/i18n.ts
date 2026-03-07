@@ -21,7 +21,7 @@ const urResources = {
     logout: 'لاگ آؤٹ',
     login: 'لاگ ان',
     register: 'رجسٹر',
-    
+
     // Common
     loading: 'لوڈ ہو رہا ہے...',
     error: 'خرابی',
@@ -35,48 +35,101 @@ const urResources = {
     view: 'دیکھیں',
     edit: 'ترمیم',
     delete: 'حذف کریں',
-    
+    refresh: 'تازہ کریں',
+    noData: 'ڈیٹا دستیاب نہیں',
+    tryAgain: 'دوبارہ کوشش کریں',
+    close: 'بند کریں',
+    back: 'واپس',
+    next: 'اگلا',
+    previous: 'پچھلا',
+    confirm: 'تصدیق کریں',
+    send: 'بھیجیں',
+    upload: 'اپ لوڈ کریں',
+    download: 'ڈاؤن لوڈ',
+    share: 'شیئر کریں',
+    copy: 'کاپی کریں',
+    reset: 'دوبارہ سیٹ کریں',
+
     // Auth
     email: 'ای میل',
     password: 'پاس ورڈ',
     phone: 'فون نمبر',
     name: 'نام',
-    loginWithGoogle: 'گوگل سے لاگ ان',
-    loginWithPhone: 'فون سے لاگ ان',
+    loginWithGoogle: 'Google سے لاگ ان',
+    loginWithPhone: 'فون سے لاگ ان (SMS)',
     enterOTP: 'OTP درج کریں',
+    sendOTP: 'OTP بھیجیں',
+    verifyOTP: 'OTP تصدیق کریں',
+    otpSent: 'OTP آپ کے فون پر بھیج دیا گیا',
     forgotPassword: 'پاس ورڈ بھول گئے؟',
     noAccount: 'اکاؤنٹ نہیں ہے؟',
     hasAccount: 'اکاؤنٹ ہے؟',
-    
+    signIn: 'لاگ ان کریں',
+    signUp: 'رجسٹر کریں',
+    signOut: 'لاگ آؤٹ',
+    demoMode: 'ڈیمو موڈ',
+    continueWithGoogle: 'Google سے جاری رکھیں',
+    securedByFirebase: 'Firebase کے ذریعے محفوظ SMS تصدیق',
+    changePhone: 'فون نمبر تبدیل کریں',
+    enterSixDigitOtp: '6 ہندسے کا OTP درج کریں',
+    otpNote: 'مثال: 3001234567 (بغیر 0 کے)',
+
     // Dashboard
     welcomeBack: 'خوش آمدید',
     todayPrices: 'آج کی قیمتیں',
     weatherAlert: 'موسمی انتباہ',
     marketTrend: 'بازار کا رجحان',
     recentActivity: 'حالیہ سرگرمی',
-    
+    quickStats: 'فوری اعداد و شمار',
+    totalSales: 'کل فروخت',
+    activeListings: 'فعال اشتہار',
+    pendingOrders: 'زیرِ التواء آرڈر',
+
     // Prices
     globalPrices: 'عالمی قیمتیں',
     pakistanPrices: 'پاکستان مارکیٹ قیمتیں',
     selectProvince: 'صوبہ منتخب کریں',
     selectCity: 'شہر منتخب کریں',
     selectMarket: 'منڈی منتخب کریں',
+    priceHistory: 'قیمت کی تاریخ',
+    lastUpdated: 'آخری اپ ڈیٹ',
+    pricePerUnit: 'فی یونٹ قیمت',
     wheat: 'گندم',
     rice: 'چاول',
     cotton: 'کپاس',
     sugarcane: 'گنا',
     corn: 'مکئی',
-    
+    tomato: 'ٹماٹر',
+    onion: 'پیاز',
+    potato: 'آلو',
+    mustard: 'سرسوں',
+    mango: 'آم',
+    globalMarkets: 'عالمی اجناس منڈی (CBOT / ICE)',
+    '6monthHistory': 'قیمت کی تاریخ (6 ماہ)',
+
     // Weather
     temperature: 'درجہ حرارت',
     humidity: 'نمی',
     windSpeed: 'ہوا کی رفتار',
     rainProbability: 'بارش کا امکان',
-    
+    feelsLike: 'محسوس ہوتا ہے',
+    sprayRecommendation: 'سپرے کی سفارش',
+    weatherForecast: 'موسمی پیش گوئی',
+    dayForecast: 'روزہ پیش گوئی',
+    hourlyTemp: 'آج کا درجہ حرارت (وقت کے مطابق)',
+    agriWeatherTips: 'زرعی موسمی مشورے',
+    searchCity: 'شہر تلاش کریں...',
+    poweredBy: 'از',
+    current: 'ابھی',
+    loadingWeather: 'موسمی ڈیٹا لوڈ ہو رہا ہے...',
+
     // Chat
     askQuestion: 'سوال پوچھیں...',
     voiceInput: 'آواز سے پوچھیں',
-    
+    aiAssistant: 'AI زرعی مددگار',
+    typeMessage: 'پیغام لکھیں...',
+    thinking: 'سوچ رہا ہوں...',
+
     // Marketplace
     postListing: 'اشتہار دیں',
     myListings: 'میرے اشتہار',
@@ -85,7 +138,11 @@ const urResources = {
     price: 'قیمت',
     location: 'مقام',
     quality: 'معیار',
-    
+    buyNow: 'ابھی خریدیں',
+    contactSeller: 'فروخت کنندہ سے رابطہ کریں',
+    noListings: 'کوئی اشتہار نہیں',
+    addListing: 'نیا اشتہار شامل کریں',
+
     // Profile
     updateProfile: 'پروفائل اپ ڈیٹ کریں',
     city: 'شہر',
@@ -93,14 +150,86 @@ const urResources = {
     country: 'ملک',
     farmSize: 'کھیت کا سائز',
     cropsGrown: 'اگائی گئی فصلیں',
-    
+    notificationSettings: 'اطلاع کی ترتیبات',
+    changePassword: 'پاس ورڈ تبدیل کریں',
+    profileSaved: 'پروفائل محفوظ ہو گئی',
+    accountInfo: 'اکاؤنٹ کی معلومات',
+    personalInfo: 'ذاتی معلومات',
+    farmInfo: 'کھیت کی معلومات',
+    preferences: 'ترجیحات',
+    language: 'زبان',
+    theme: 'تھیم',
+    darkMode: 'ڈارک موڈ',
+    lightMode: 'لائٹ موڈ',
+
     // Roles
     farmer: 'کسان',
     urban_farmer: 'شہری کسان',
     buyer: 'خریدار',
     agriculture_expert: 'زرعی ماہر',
     admin: 'ایڈمن',
-    
+
+    // Disease Detection
+    uploadImage: 'تصویر اپ لوڈ کریں',
+    detectDisease: 'بیماری کا پتہ لگائیں',
+    diseaseFound: 'بیماری ملی',
+    noDisease: 'کوئی بیماری نہیں',
+    confidence: 'یقین',
+    treatment: 'علاج',
+    severity: 'شدت',
+    low: 'کم',
+    medium: 'درمیانہ',
+    high: 'زیادہ',
+
+    // News
+    readMore: 'مزید پڑھیں',
+    publishedAt: 'شائع ہوا',
+    source: 'ذریعہ',
+    category: 'زمرہ',
+    subsidy: 'سبسڈی',
+    scheme: 'اسکیم',
+    policy: 'پالیسی',
+    water: 'پانی',
+    general: 'عام',
+
+    // Complaints
+    newComplaint: 'نئی شکایت',
+    complaintSubject: 'موضوع',
+    complaintDescription: 'تفصیل',
+    complaintStatus: 'حیثیت',
+    pending: 'زیرِ التواء',
+    in_review: 'جائزے میں',
+    resolved: 'حل ہو گئی',
+    closed: 'بند',
+    adminResponse: 'ایڈمن کا جواب',
+    submitComplaint: 'شکایت درج کریں',
+
+    // Eco Farming
+    ecoTips: 'ماحول دوست تجاویز',
+    waterSaving: 'پانی کی بچت',
+    soilHealth: 'مٹی کی صحت',
+    pestControl: 'کیڑا انتظام',
+    energySaving: 'توانائی کی بچت',
+    organic: 'نامیاتی',
+
+    // Notifications
+    markAllRead: 'سب کو پڑھا ہوا نشان کریں',
+    unread: 'نہیں پڑھا',
+    read: 'پڑھا ہوا',
+    noNotifications: 'کوئی اطلاع نہیں',
+    priceAlert: 'قیمت کی اطلاع',
+    weatherWarning: 'موسمی انتباہ',
+    diseaseAlert: 'بیماری کی اطلاع',
+    govtAnnouncement: 'حکومتی اعلان',
+
+    // Advisory
+    getAdvice: 'مشورہ حاصل کریں',
+    advisoryFor: 'مشورہ کے لیے',
+    season: 'موسم',
+    cropType: 'فصل کی قسم',
+    soilType: 'مٹی کی قسم',
+    irrigationMethod: 'آبپاشی کا طریقہ',
+
     appName: 'ایگری اسمارٹ 360',
     tagline: 'پاکستانی کسانوں کا ڈیجیٹل ساتھی',
   }
@@ -126,7 +255,7 @@ const enResources = {
     logout: 'Logout',
     login: 'Login',
     register: 'Register',
-    
+
     // Common
     loading: 'Loading...',
     error: 'Error',
@@ -140,48 +269,101 @@ const enResources = {
     view: 'View',
     edit: 'Edit',
     delete: 'Delete',
-    
+    refresh: 'Refresh',
+    noData: 'No data available',
+    tryAgain: 'Try Again',
+    close: 'Close',
+    back: 'Back',
+    next: 'Next',
+    previous: 'Previous',
+    confirm: 'Confirm',
+    send: 'Send',
+    upload: 'Upload',
+    download: 'Download',
+    share: 'Share',
+    copy: 'Copy',
+    reset: 'Reset',
+
     // Auth
     email: 'Email',
     password: 'Password',
     phone: 'Phone Number',
     name: 'Name',
     loginWithGoogle: 'Login with Google',
-    loginWithPhone: 'Login with Phone',
+    loginWithPhone: 'Login with Phone (SMS)',
     enterOTP: 'Enter OTP',
+    sendOTP: 'Send OTP via SMS',
+    verifyOTP: 'Verify OTP',
+    otpSent: 'OTP has been sent to your phone',
     forgotPassword: 'Forgot Password?',
     noAccount: "Don't have an account?",
     hasAccount: 'Already have an account?',
-    
+    signIn: 'Sign In',
+    signUp: 'Register',
+    signOut: 'Sign Out',
+    demoMode: 'Demo Mode',
+    continueWithGoogle: 'Continue with Google',
+    securedByFirebase: 'Secured by Firebase SMS Authentication',
+    changePhone: 'Change Phone Number',
+    enterSixDigitOtp: 'Enter 6-digit OTP',
+    otpNote: 'e.g. 3001234567 (without leading 0)',
+
     // Dashboard
     welcomeBack: 'Welcome back',
     todayPrices: "Today's Prices",
     weatherAlert: 'Weather Alert',
     marketTrend: 'Market Trend',
     recentActivity: 'Recent Activity',
-    
+    quickStats: 'Quick Stats',
+    totalSales: 'Total Sales',
+    activeListings: 'Active Listings',
+    pendingOrders: 'Pending Orders',
+
     // Prices
     globalPrices: 'Global Prices',
     pakistanPrices: 'Pakistan Market Prices',
     selectProvince: 'Select Province',
     selectCity: 'Select City',
     selectMarket: 'Select Market',
+    priceHistory: 'Price History',
+    lastUpdated: 'Last Updated',
+    pricePerUnit: 'Price per unit',
     wheat: 'Wheat',
     rice: 'Rice',
     cotton: 'Cotton',
     sugarcane: 'Sugarcane',
     corn: 'Corn',
-    
+    tomato: 'Tomato',
+    onion: 'Onion',
+    potato: 'Potato',
+    mustard: 'Mustard',
+    mango: 'Mango',
+    globalMarkets: 'Global Commodity Markets (CBOT / ICE)',
+    '6monthHistory': 'Price History (6 Months)',
+
     // Weather
     temperature: 'Temperature',
     humidity: 'Humidity',
     windSpeed: 'Wind Speed',
     rainProbability: 'Rain Probability',
-    
+    feelsLike: 'Feels Like',
+    sprayRecommendation: 'Spray Recommendation',
+    weatherForecast: 'Weather Forecast',
+    dayForecast: '-Day Forecast',
+    hourlyTemp: 'Temperature Throughout the Day',
+    agriWeatherTips: 'Agricultural Weather Advice',
+    searchCity: 'Search city...',
+    poweredBy: 'Powered by',
+    current: 'Current',
+    loadingWeather: 'Loading weather data...',
+
     // Chat
     askQuestion: 'Ask a question...',
     voiceInput: 'Ask with voice',
-    
+    aiAssistant: 'AI Agriculture Assistant',
+    typeMessage: 'Type a message...',
+    thinking: 'Thinking...',
+
     // Marketplace
     postListing: 'Post Listing',
     myListings: 'My Listings',
@@ -190,7 +372,11 @@ const enResources = {
     price: 'Price',
     location: 'Location',
     quality: 'Quality',
-    
+    buyNow: 'Buy Now',
+    contactSeller: 'Contact Seller',
+    noListings: 'No listings found',
+    addListing: 'Add New Listing',
+
     // Profile
     updateProfile: 'Update Profile',
     city: 'City',
@@ -198,14 +384,86 @@ const enResources = {
     country: 'Country',
     farmSize: 'Farm Size',
     cropsGrown: 'Crops Grown',
-    
+    notificationSettings: 'Notification Settings',
+    changePassword: 'Change Password',
+    profileSaved: 'Profile saved successfully',
+    accountInfo: 'Account Information',
+    personalInfo: 'Personal Information',
+    farmInfo: 'Farm Information',
+    preferences: 'Preferences',
+    language: 'Language',
+    theme: 'Theme',
+    darkMode: 'Dark Mode',
+    lightMode: 'Light Mode',
+
     // Roles
     farmer: 'Farmer',
     urban_farmer: 'Urban Farmer',
     buyer: 'Buyer',
     agriculture_expert: 'Agriculture Expert',
     admin: 'Admin',
-    
+
+    // Disease Detection
+    uploadImage: 'Upload Image',
+    detectDisease: 'Detect Disease',
+    diseaseFound: 'Disease Found',
+    noDisease: 'No Disease Found',
+    confidence: 'Confidence',
+    treatment: 'Treatment',
+    severity: 'Severity',
+    low: 'Low',
+    medium: 'Medium',
+    high: 'High',
+
+    // News
+    readMore: 'Read More',
+    publishedAt: 'Published',
+    source: 'Source',
+    category: 'Category',
+    subsidy: 'Subsidy',
+    scheme: 'Scheme',
+    policy: 'Policy',
+    water: 'Water',
+    general: 'General',
+
+    // Complaints
+    newComplaint: 'New Complaint',
+    complaintSubject: 'Subject',
+    complaintDescription: 'Description',
+    complaintStatus: 'Status',
+    pending: 'Pending',
+    in_review: 'In Review',
+    resolved: 'Resolved',
+    closed: 'Closed',
+    adminResponse: 'Admin Response',
+    submitComplaint: 'Submit Complaint',
+
+    // Eco Farming
+    ecoTips: 'Eco-Friendly Tips',
+    waterSaving: 'Water Saving',
+    soilHealth: 'Soil Health',
+    pestControl: 'Pest Control',
+    energySaving: 'Energy Saving',
+    organic: 'Organic',
+
+    // Notifications
+    markAllRead: 'Mark All as Read',
+    unread: 'Unread',
+    read: 'Read',
+    noNotifications: 'No notifications',
+    priceAlert: 'Price Alert',
+    weatherWarning: 'Weather Warning',
+    diseaseAlert: 'Disease Alert',
+    govtAnnouncement: 'Government Announcement',
+
+    // Advisory
+    getAdvice: 'Get Advice',
+    advisoryFor: 'Advisory for',
+    season: 'Season',
+    cropType: 'Crop Type',
+    soilType: 'Soil Type',
+    irrigationMethod: 'Irrigation Method',
+
     appName: 'AgriSmart 360',
     tagline: "Pakistan Farmers' Digital Companion",
   }
