@@ -26,13 +26,14 @@ AgriSmart 360 is a full-stack agriculture web platform built for Pakistan farmer
 | Frontend | React 19 + TypeScript |
 | UI | Tailwind CSS + custom theme |
 | Charts | Recharts |
-| Routing | React Router DOM v6 |
+| Routing | React Router DOM v7 |
 | State | React Context + TanStack Query |
-| Auth | Supabase Auth (email/phone/Google) |
+| Auth | Supabase Auth + Firebase (phone) |
 | Database | Supabase (PostgreSQL) |
-| Translation | i18next (11 languages) |
+| Backend | Node.js + Express.js (TypeScript) |
+| Translation | i18next (Urdu + English) |
 | Weather | OpenWeather API |
-| Notifications | Twilio SMS |
+| Notifications | Dashboard + SMS (via backend) |
 | Build | Vite 7 |
 
 ---
@@ -57,13 +58,23 @@ cp .env.example .env.local
 
 Fill in the values (see below for how to get each key).
 
-### 3. Run Development Server
+### 3. Run Development Servers
 
+**Frontend** (React + Vite):
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173)
+**Backend** (Express.js):
+```bash
+cd server
+cp .env.example .env
+npm install
+npm run dev
+```
+
+Frontend: [http://localhost:5173](http://localhost:5173)
+Backend API: [http://localhost:5000](http://localhost:5000)
 
 ### 4. Build for Production
 
@@ -252,22 +263,37 @@ AgriSmart360/
 ├── public/
 │   ├── leaf.svg              # App logo
 │   └── vite.svg
-├── src/
+├── server/                   # Express.js backend (MERN stack)
+│   ├── package.json          # Server dependencies
+│   ├── tsconfig.json         # TypeScript config
+│   ├── .env.example          # Server env template
+│   └── src/
+│       ├── index.ts          # Express server entry
+│       ├── config/
+│       │   └── supabase.ts   # Server Supabase client
+│       ├── middleware/
+│       │   └── auth.ts       # JWT auth middleware
+│       └── routes/
+│           ├── auth.ts       # OTP + email login
+│           ├── prices.ts     # Crop prices API
+│           ├── weather.ts    # Weather proxy API
+│           ├── news.ts       # Agriculture news API
+│           └── notifications.ts # Notifications API
+├── src/                      # React frontend
 │   ├── components/
-│   │   ├── layout/
-│   │   │   ├── Layout.tsx    # Main layout wrapper
-│   │   │   ├── Navbar.tsx    # Top navigation
-│   │   │   └── Sidebar.tsx   # Side navigation
-│   │   ├── ui/               # Reusable UI components
-│   │   └── ...               # Feature components
+│   │   └── layout/
+│   │       ├── Layout.tsx    # Main layout wrapper
+│   │       ├── Navbar.tsx    # Top navigation
+│   │       └── Sidebar.tsx   # Side navigation
 │   ├── contexts/
-│   │   ├── AuthContext.tsx   # Auth state + Supabase
+│   │   ├── AuthContext.tsx   # Auth state + Supabase/Firebase
 │   │   └── ThemeContext.tsx  # Dark/light mode
 │   ├── hooks/
 │   │   └── useNotifications.ts
 │   ├── lib/
-│   │   ├── api.ts            # API calls + mock data
-│   │   ├── i18n.ts           # 11-language config
+│   │   ├── api.ts            # API calls + backend integration
+│   │   ├── firebase.ts       # Firebase phone auth client
+│   │   ├── i18n.ts           # Urdu/English translations
 │   │   └── supabase.ts       # Supabase client
 │   ├── pages/
 │   │   ├── Dashboard.tsx     # Main dashboard
@@ -284,6 +310,7 @@ AgriSmart360/
 │   │   ├── EcoFarming.tsx    # Eco farming tips
 │   │   ├── Notifications.tsx # Notifications
 │   │   ├── Advisory.tsx      # Farmer advisory
+│   │   ├── LandingPage.tsx   # Public landing page
 │   │   ├── Login.tsx         # Login page
 │   │   └── Register.tsx      # Registration
 │   ├── types/
@@ -291,7 +318,7 @@ AgriSmart360/
 │   ├── App.tsx               # Router + providers
 │   ├── main.tsx              # Entry point
 │   └── index.css             # Tailwind + global styles
-├── .env.example              # Environment variables template
+├── .env.example              # Frontend env template
 ├── tailwind.config.js        # Tailwind custom theme
 ├── vite.config.ts            # Vite configuration
 ├── tsconfig.json             # TypeScript config
@@ -306,15 +333,6 @@ AgriSmart360/
 |------|----------|--------|
 | `ur` | اردو (Urdu) — **Default** | RTL |
 | `en` | English | LTR |
-| `pa` | ਪੰਜਾਬੀ (Punjabi) | LTR |
-| `sd` | سنڌي (Sindhi) | RTL |
-| `ps` | پښتو (Pashto) | RTL |
-| `skr` | سرائیکی (Saraiki) | RTL |
-| `bal` | بلوچی (Balochi) | RTL |
-| `ar` | العربية (Arabic) | RTL |
-| `zh` | 中文 (Chinese) | LTR |
-| `hi` | हिंदी (Hindi) | LTR |
-| `tr` | Türkçe (Turkish) | LTR |
 
 ---
 
