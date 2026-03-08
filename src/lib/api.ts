@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+// Backend API base URL – the Express server runs on port 5000 by default.
+// In production, set VITE_API_BASE_URL to the deployed backend URL.
+export const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
 // NOTE: VITE_OPENWEATHER_API_KEY is exposed client-side (prefixed with VITE_).
 // OpenWeather free tier allows CORS requests from browsers.
 // For production with paid plans, proxy via a backend/edge function to protect the key.
@@ -380,3 +384,141 @@ export const ECO_TIPS = [
     category: 'soil',
   },
 ];
+
+// ──────────────────────────────────────────────────────
+// Backend API helper functions
+// These call the Express.js backend (server/) and
+// fall back to the in-app data above when the backend
+// is not reachable (e.g. during frontend-only dev).
+// ──────────────────────────────────────────────────────
+
+/**
+ * Helper: get an auth token for backend requests.
+ * Returns the Supabase JWT if available, or a demo token.
+ */
+function getAuthHeader(): Record<string, string> {
+  // Check Supabase session in local storage
+  const sbKey = Object.keys(localStorage).find(k => k.startsWith('sb-') && k.endsWith('-auth-token'));
+  if (sbKey) {
+    try {
+      const session = JSON.parse(localStorage.getItem(sbKey) || '{}');
+      if (session?.access_token) {
+        return { Authorization: `Bearer ${session.access_token}` };
+      }
+    } catch {
+      // ignore
+    }
+  }
+  // Demo mode fallback
+  if (localStorage.getItem('demo_user')) {
+    return { Authorization: 'Bearer demo-token' };
+  }
+  return {};
+}
+
+/** Fetch Pakistan crop prices from backend */
+export async function fetchPakistanPricesFromAPI() {
+  try {
+    const res = await axios.get(`${API_BASE}/api/prices/pakistan`);
+    return res.data;
+  } catch {
+    return getPakistanMarketPrices();
+  }
+}
+
+/** Fetch global crop prices from backend */
+export async function fetchGlobalPricesFromAPI() {
+  try {
+    const res = await axios.get(`${API_BASE}/api/prices/global`);
+    return res.data;
+  } catch {
+    return getGlobalMarketPrices();
+  }
+}
+
+/** Fetch agriculture news from backend */
+export async function fetchNewsFromAPI() {
+  try {
+    const res = await axios.get(`${API_BASE}/api/news`);
+    return res.data;
+  } catch {
+    return AGRICULTURE_NEWS;
+  }
+}
+
+/** Fetch eco tips from backend */
+export async function fetchEcoTipsFromAPI() {
+  try {
+    const res = await axios.get(`${API_BASE}/api/news/eco-tips`);
+    return res.data;
+  } catch {
+    return ECO_TIPS;
+  }
+}
+
+/** Fetch weather from backend */
+export async function fetchWeatherFromAPI(city: string) {
+  try {
+    const res = await axios.get(`${API_BASE}/api/weather/current`, { params: { city } });
+    return res.data;
+  } catch {
+    return fetchWeather(city);
+  }
+}
+
+/** Fetch forecast from backend */
+export async function fetchForecastFromAPI(city: string) {
+  try {
+    const res = await axios.get(`${API_BASE}/api/weather/forecast`, { params: { city } });
+    return res.data;
+  } catch {
+    return fetchWeatherForecast(city);
+  }
+}
+
+/** Fetch hourly forecast from backend */
+export async function fetchHourlyFromAPI(city: string) {
+  try {
+    const res = await axios.get(`${API_BASE}/api/weather/hourly`, { params: { city } });
+    return res.data;
+  } catch {
+    return fetchHourlyForecast(city);
+  }
+}
+
+/** Fetch notifications from backend */
+export async function fetchNotificationsFromAPI() {
+  try {
+    const res = await axios.get(`${API_BASE}/api/notifications`, { headers: getAuthHeader() });
+    return res.data;
+  } catch {
+    return [];
+  }
+}
+
+/** Send a notification via backend (stores in DB + SMS) */
+export async function sendNotificationViaAPI(data: {
+  title: string;
+  message: string;
+  type?: string;
+  phone?: string;
+}) {
+  try {
+    const res = await axios.post(`${API_BASE}/api/notifications/send`, data, {
+      headers: getAuthHeader(),
+    });
+    return res.data;
+  } catch {
+    return { success: false };
+  }
+}
+
+/** Backend health check */
+export async function checkBackendHealth() {
+  try {
+    const res = await axios.get(`${API_BASE}/api/health`, { timeout: 3000 });
+    return res.data;
+  } catch {
+    return null;
+  }
+}
