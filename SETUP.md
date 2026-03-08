@@ -45,42 +45,42 @@ AgriSmart 360 is a full-stack agriculture web platform built for Pakistan farmer
 ```bash
 git clone <your-repo>
 cd AgriSmart360
-npm install
+
+# Install all dependencies (frontend + backend)
+npm run install:all
 ```
 
 ### 2. Environment Variables
 
-Copy `.env.example` to `.env.local`:
-
 ```bash
-cp .env.example .env.local
+# Frontend
+cp frontend/.env.example frontend/.env.local
+
+# Backend
+cp backend/.env.example backend/.env
 ```
 
 Fill in the values (see below for how to get each key).
 
-### 3. Run Development Servers
+### 3. Database Setup
 
-**Frontend** (React + Vite):
+Run the SQL in `database/schema.sql` in your [Supabase SQL Editor](https://supabase.com) to create the required tables and RLS policies.
+
+### 4. Run Development Servers
+
 ```bash
+# Run both frontend and backend simultaneously
 npm run dev
+
+# Or run them separately:
+npm run dev:frontend    # Frontend at http://localhost:5173
+npm run dev:backend     # Backend API at http://localhost:5000
 ```
 
-**Backend** (Express.js):
-```bash
-cd server
-cp .env.example .env
-npm install
-npm run dev
-```
-
-Frontend: [http://localhost:5173](http://localhost:5173)
-Backend API: [http://localhost:5000](http://localhost:5000)
-
-### 4. Build for Production
+### 5. Build for Production
 
 ```bash
 npm run build
-npm run preview
 ```
 
 ---
@@ -99,7 +99,7 @@ npm run preview
 
 #### Supabase Database Tables
 
-Run this SQL in your Supabase SQL Editor:
+Run the SQL in `database/schema.sql` in your Supabase SQL Editor, or run the following manually:
 
 ```sql
 -- User profiles table
@@ -260,69 +260,76 @@ Currently the app uses representative mock data that can be replaced by real API
 
 ```
 AgriSmart360/
-├── public/
-│   ├── leaf.svg              # App logo
-│   └── vite.svg
-├── server/                   # Express.js backend (MERN stack)
-│   ├── package.json          # Server dependencies
-│   ├── tsconfig.json         # TypeScript config
-│   ├── .env.example          # Server env template
-│   └── src/
-│       ├── index.ts          # Express server entry
-│       ├── config/
-│       │   └── supabase.ts   # Server Supabase client
-│       ├── middleware/
-│       │   └── auth.ts       # JWT auth middleware
-│       └── routes/
-│           ├── auth.ts       # OTP + email login
-│           ├── prices.ts     # Crop prices API
-│           ├── weather.ts    # Weather proxy API
-│           ├── news.ts       # Agriculture news API
-│           └── notifications.ts # Notifications API
-├── src/                      # React frontend
-│   ├── components/
-│   │   └── layout/
-│   │       ├── Layout.tsx    # Main layout wrapper
-│   │       ├── Navbar.tsx    # Top navigation
-│   │       └── Sidebar.tsx   # Side navigation
-│   ├── contexts/
-│   │   ├── AuthContext.tsx   # Auth state + Supabase/Firebase
-│   │   └── ThemeContext.tsx  # Dark/light mode
-│   ├── hooks/
-│   │   └── useNotifications.ts
-│   ├── lib/
-│   │   ├── api.ts            # API calls + backend integration
-│   │   ├── firebase.ts       # Firebase phone auth client
-│   │   ├── i18n.ts           # Urdu/English translations
-│   │   └── supabase.ts       # Supabase client
-│   ├── pages/
-│   │   ├── Dashboard.tsx     # Main dashboard
-│   │   ├── Prices.tsx        # Crop prices
-│   │   ├── Weather.tsx       # Weather forecast
-│   │   ├── ChatAssistant.tsx # AI chat (Urdu voice)
-│   │   ├── Marketplace.tsx   # Buy/sell crops
-│   │   ├── DiseaseDetection.tsx # Plant disease AI
-│   │   ├── News.tsx          # Agriculture news
-│   │   ├── LandAds.tsx       # Land/equipment ads
-│   │   ├── Complaint.tsx     # Complaint system
-│   │   ├── Profile.tsx       # User profile
-│   │   ├── History.tsx       # Activity history
-│   │   ├── EcoFarming.tsx    # Eco farming tips
-│   │   ├── Notifications.tsx # Notifications
-│   │   ├── Advisory.tsx      # Farmer advisory
-│   │   ├── LandingPage.tsx   # Public landing page
-│   │   ├── Login.tsx         # Login page
-│   │   └── Register.tsx      # Registration
-│   ├── types/
-│   │   └── index.ts          # TypeScript types
-│   ├── App.tsx               # Router + providers
-│   ├── main.tsx              # Entry point
-│   └── index.css             # Tailwind + global styles
-├── .env.example              # Frontend env template
-├── tailwind.config.js        # Tailwind custom theme
-├── vite.config.ts            # Vite configuration
-├── tsconfig.json             # TypeScript config
-└── SETUP.md                  # This file
+├── frontend/                 # React + Vite frontend
+│   ├── public/
+│   │   ├── leaf.svg          # App logo
+│   │   └── vite.svg
+│   ├── src/
+│   │   ├── components/
+│   │   │   └── layout/
+│   │   │       ├── Layout.tsx    # Main layout wrapper
+│   │   │       ├── Navbar.tsx    # Top navigation
+│   │   │       └── Sidebar.tsx   # Side navigation
+│   │   ├── contexts/
+│   │   │   ├── AuthContext.tsx   # Auth state + Supabase/Firebase
+│   │   │   └── ThemeContext.tsx  # Dark/light mode
+│   │   ├── hooks/
+│   │   │   └── useNotifications.ts
+│   │   ├── lib/
+│   │   │   ├── api.ts            # API calls + backend integration
+│   │   │   ├── firebase.ts       # Firebase phone auth client
+│   │   │   ├── i18n.ts           # Urdu/English translations
+│   │   │   └── supabase.ts       # Supabase client
+│   │   ├── pages/
+│   │   │   ├── Dashboard.tsx     # Main dashboard
+│   │   │   ├── Prices.tsx        # Crop prices
+│   │   │   ├── Weather.tsx       # Weather forecast
+│   │   │   ├── ChatAssistant.tsx # AI chat (Urdu voice)
+│   │   │   ├── Marketplace.tsx   # Buy/sell crops
+│   │   │   ├── DiseaseDetection.tsx # Plant disease AI
+│   │   │   ├── News.tsx          # Agriculture news
+│   │   │   ├── LandAds.tsx       # Land/equipment ads
+│   │   │   ├── Complaint.tsx     # Complaint system
+│   │   │   ├── Profile.tsx       # User profile
+│   │   │   ├── History.tsx       # Activity history
+│   │   │   ├── EcoFarming.tsx    # Eco farming tips
+│   │   │   ├── Notifications.tsx # Notifications
+│   │   │   ├── Advisory.tsx      # Farmer advisory
+│   │   │   ├── LandingPage.tsx   # Public landing page
+│   │   │   ├── Login.tsx         # Login page
+│   │   │   └── Register.tsx      # Registration
+│   │   ├── types/
+│   │   │   └── index.ts          # TypeScript types
+│   │   ├── App.tsx               # Router + providers
+│   │   ├── main.tsx              # Entry point
+│   │   └── index.css             # Tailwind + global styles
+│   ├── .env.example              # Frontend env template
+│   ├── package.json              # Frontend dependencies
+│   ├── tailwind.config.js        # Tailwind custom theme
+│   ├── vite.config.ts            # Vite configuration
+│   └── tsconfig.json             # TypeScript config
+├── backend/                  # Express.js backend
+│   ├── src/
+│   │   ├── index.ts          # Express server entry
+│   │   ├── config/
+│   │   │   └── supabase.ts   # Server Supabase client
+│   │   ├── middleware/
+│   │   │   └── auth.ts       # JWT auth middleware
+│   │   └── routes/
+│   │       ├── auth.ts       # OTP + email login
+│   │       ├── prices.ts     # Crop prices API
+│   │       ├── weather.ts    # Weather proxy API
+│   │       ├── news.ts       # Agriculture news API
+│   │       └── notifications.ts # Notifications API
+│   ├── .env.example          # Backend env template
+│   ├── package.json          # Backend dependencies
+│   └── tsconfig.json         # TypeScript config
+├── database/                 # Database schema & docs
+│   ├── schema.sql            # Supabase/PostgreSQL schema
+│   └── README.md             # Database documentation
+├── package.json              # Root scripts (dev, build, install)
+├── SETUP.md                  # This file
+└── README.md                 # Project overview
 ```
 
 ---
@@ -362,6 +369,8 @@ AgriSmart360/
 ### Deploy to Vercel (Recommended)
 
 ```bash
+# From the frontend/ directory
+cd frontend
 npm install -g vercel
 vercel --prod
 ```
@@ -371,6 +380,7 @@ Add environment variables in Vercel Dashboard → Settings → Environment Varia
 ### Deploy to Netlify
 
 ```bash
+cd frontend
 npm run build
 # Deploy the dist/ folder to Netlify
 ```
