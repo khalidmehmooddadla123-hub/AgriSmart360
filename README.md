@@ -1,73 +1,73 @@
-# React + TypeScript + Vite
+# AgriSmart 360
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Pakistan's Smart Agriculture Ecosystem** 🌾
 
-Currently, two official plugins are available:
+A full-stack agriculture web platform built for Pakistani farmers with real-time crop prices, weather forecasting, AI chat assistant, plant disease detection, farmer marketplace, and more.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Project Structure
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+AgriSmart360/
+├── frontend/          # React + Vite + TypeScript (UI)
+├── backend/           # Express.js + TypeScript (API server)
+├── database/          # Database schema & documentation (Supabase/PostgreSQL)
+├── package.json       # Root scripts to run frontend & backend
+├── SETUP.md           # Detailed setup guide
+└── README.md          # This file
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Quick Start
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 1. Install Dependencies
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# Install all dependencies (frontend + backend)
+npm run install:all
 ```
+
+### 2. Environment Variables
+
+```bash
+# Frontend
+cp frontend/.env.example frontend/.env.local
+
+# Backend
+cp backend/.env.example backend/.env
+```
+
+Fill in the required API keys (see [SETUP.md](SETUP.md) for details).
+
+### 3. Database Setup
+
+Run the SQL in `database/schema.sql` in your [Supabase SQL Editor](https://supabase.com) to create the required tables.
+
+### 4. Run Development Servers
+
+```bash
+# Run both frontend and backend
+npm run dev
+
+# Or run them separately:
+npm run dev:frontend    # http://localhost:5173
+npm run dev:backend     # http://localhost:5000
+```
+
+### 5. Build for Production
+
+```bash
+npm run build
+```
+
+## Tech Stack
+
+| Layer      | Technology                                  |
+|------------|---------------------------------------------|
+| Frontend   | React 19 + TypeScript + Vite 7 + Tailwind   |
+| Backend    | Node.js + Express.js + TypeScript            |
+| Database   | Supabase (PostgreSQL)                        |
+| Auth       | Supabase Auth + Firebase (phone OTP)         |
+| i18n       | i18next (Urdu default + English)             |
+
+---
+
+Built with ❤️ for Pakistan's Farming Community 🌾
