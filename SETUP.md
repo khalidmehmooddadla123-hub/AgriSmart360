@@ -45,15 +45,16 @@ AgriSmart 360 is a full-stack agriculture web platform built for Pakistan farmer
 ```bash
 git clone <your-repo>
 cd AgriSmart360
-npm install
+npm run install:all
 ```
 
 ### 2. Environment Variables
 
-Copy `.env.example` to `.env.local`:
+Copy `.env.example` files:
 
 ```bash
-cp .env.example .env.local
+cp frontend/.env.example frontend/.env.local
+cp backend/.env.example backend/.env
 ```
 
 Fill in the values (see below for how to get each key).
@@ -62,15 +63,12 @@ Fill in the values (see below for how to get each key).
 
 **Frontend** (React + Vite):
 ```bash
-npm run dev
+npm run dev:frontend
 ```
 
 **Backend** (Express.js):
 ```bash
-cd server
-cp .env.example .env
-npm install
-npm run dev
+npm run dev:backend
 ```
 
 Frontend: [http://localhost:5173](http://localhost:5173)
@@ -252,7 +250,7 @@ For real Pakistan mandi prices, these sources may be used:
 2. **AMIS (Agricultural Market Information System)**: [http://amis.pk](http://amis.pk)
 3. **Kissan Info** (unofficial): scraping approach
 
-Currently the app uses representative mock data that can be replaced by real API calls in `src/lib/api.ts`.
+Currently the app uses representative mock data that can be replaced by real API calls in `frontend/src/lib/api.ts`.
 
 ---
 
@@ -260,69 +258,74 @@ Currently the app uses representative mock data that can be replaced by real API
 
 ```
 AgriSmart360/
-├── public/
-│   ├── leaf.svg              # App logo
-│   └── vite.svg
-├── server/                   # Express.js backend (MERN stack)
-│   ├── package.json          # Server dependencies
-│   ├── tsconfig.json         # TypeScript config
-│   ├── .env.example          # Server env template
+├── package.json               # Root orchestration scripts
+├── frontend/                  # React frontend (Vite + TypeScript)
+│   ├── package.json           # Frontend dependencies
+│   ├── .env.example           # Frontend env template
+│   ├── index.html             # HTML entry point
+│   ├── vite.config.ts         # Vite configuration
+│   ├── tailwind.config.js     # Tailwind custom theme
+│   ├── tsconfig.json          # TypeScript config
+│   ├── eslint.config.js       # ESLint config
+│   ├── public/
+│   │   └── leaf.svg           # App logo
 │   └── src/
-│       ├── index.ts          # Express server entry
+│       ├── components/
+│       │   └── layout/
+│       │       ├── Layout.tsx    # Main layout wrapper
+│       │       ├── Navbar.tsx    # Top navigation
+│       │       └── Sidebar.tsx   # Side navigation
+│       ├── contexts/
+│       │   ├── AuthContext.tsx   # Auth state + Supabase/Firebase
+│       │   └── ThemeContext.tsx  # Dark/light mode
+│       ├── hooks/
+│       │   └── useNotifications.ts
+│       ├── lib/
+│       │   ├── api.ts            # API calls + backend integration
+│       │   ├── firebase.ts       # Firebase phone auth client
+│       │   ├── grok.ts           # Grok AI API client
+│       │   ├── i18n.ts           # Urdu/English translations
+│       │   └── supabase.ts       # Supabase client
+│       ├── pages/
+│       │   ├── Dashboard.tsx     # Main dashboard
+│       │   ├── Prices.tsx        # Crop prices
+│       │   ├── Weather.tsx       # Weather forecast
+│       │   ├── ChatAssistant.tsx # AI chat (Grok API)
+│       │   ├── Marketplace.tsx   # Buy/sell crops
+│       │   ├── DiseaseDetection.tsx # Plant disease AI (Grok API)
+│       │   ├── News.tsx          # Agriculture news
+│       │   ├── LandAds.tsx       # Land/equipment ads
+│       │   ├── Complaint.tsx     # Complaint system
+│       │   ├── Profile.tsx       # User profile
+│       │   ├── History.tsx       # Activity history
+│       │   ├── EcoFarming.tsx    # Eco farming tips
+│       │   ├── Notifications.tsx # Notifications
+│       │   ├── Advisory.tsx      # Farmer advisory
+│       │   ├── LandingPage.tsx   # Public landing page
+│       │   ├── Login.tsx         # Login page
+│       │   └── Register.tsx      # Registration
+│       ├── types/
+│       │   └── index.ts          # TypeScript types
+│       ├── App.tsx               # Router + providers
+│       ├── main.tsx              # Entry point
+│       └── index.css             # Tailwind + global styles
+├── backend/                   # Express.js backend
+│   ├── package.json           # Server dependencies
+│   ├── tsconfig.json          # TypeScript config
+│   ├── .env.example           # Server env template
+│   └── src/
+│       ├── index.ts           # Express server entry
 │       ├── config/
-│       │   └── supabase.ts   # Server Supabase client
+│       │   └── supabase.ts    # Server Supabase client
 │       ├── middleware/
-│       │   └── auth.ts       # JWT auth middleware
+│       │   └── auth.ts        # JWT auth middleware
 │       └── routes/
-│           ├── auth.ts       # OTP + email login
-│           ├── prices.ts     # Crop prices API
-│           ├── weather.ts    # Weather proxy API
-│           ├── news.ts       # Agriculture news API
+│           ├── auth.ts        # OTP + email login
+│           ├── prices.ts      # Crop prices API
+│           ├── weather.ts     # Weather proxy API
+│           ├── news.ts        # Agriculture news API
 │           └── notifications.ts # Notifications API
-├── src/                      # React frontend
-│   ├── components/
-│   │   └── layout/
-│   │       ├── Layout.tsx    # Main layout wrapper
-│   │       ├── Navbar.tsx    # Top navigation
-│   │       └── Sidebar.tsx   # Side navigation
-│   ├── contexts/
-│   │   ├── AuthContext.tsx   # Auth state + Supabase/Firebase
-│   │   └── ThemeContext.tsx  # Dark/light mode
-│   ├── hooks/
-│   │   └── useNotifications.ts
-│   ├── lib/
-│   │   ├── api.ts            # API calls + backend integration
-│   │   ├── firebase.ts       # Firebase phone auth client
-│   │   ├── i18n.ts           # Urdu/English translations
-│   │   └── supabase.ts       # Supabase client
-│   ├── pages/
-│   │   ├── Dashboard.tsx     # Main dashboard
-│   │   ├── Prices.tsx        # Crop prices
-│   │   ├── Weather.tsx       # Weather forecast
-│   │   ├── ChatAssistant.tsx # AI chat (Urdu voice)
-│   │   ├── Marketplace.tsx   # Buy/sell crops
-│   │   ├── DiseaseDetection.tsx # Plant disease AI
-│   │   ├── News.tsx          # Agriculture news
-│   │   ├── LandAds.tsx       # Land/equipment ads
-│   │   ├── Complaint.tsx     # Complaint system
-│   │   ├── Profile.tsx       # User profile
-│   │   ├── History.tsx       # Activity history
-│   │   ├── EcoFarming.tsx    # Eco farming tips
-│   │   ├── Notifications.tsx # Notifications
-│   │   ├── Advisory.tsx      # Farmer advisory
-│   │   ├── LandingPage.tsx   # Public landing page
-│   │   ├── Login.tsx         # Login page
-│   │   └── Register.tsx      # Registration
-│   ├── types/
-│   │   └── index.ts          # TypeScript types
-│   ├── App.tsx               # Router + providers
-│   ├── main.tsx              # Entry point
-│   └── index.css             # Tailwind + global styles
-├── .env.example              # Frontend env template
-├── tailwind.config.js        # Tailwind custom theme
-├── vite.config.ts            # Vite configuration
-├── tsconfig.json             # TypeScript config
-└── SETUP.md                  # This file
+└── SETUP.md                   # This file
 ```
 
 ---
